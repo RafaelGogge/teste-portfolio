@@ -89,7 +89,6 @@
 
 ### **Backend & Services**
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
-![Resend](https://img.shields.io/badge/Resend-000000?style=flat-square&logo=mail-dot-ru&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-43853D?style=flat-square&logo=node.js&logoColor=white)
 
 ### **Tools & Quality**
@@ -157,10 +156,10 @@ graph LR
 <details>
 <summary>📞 <strong>Formulário de Contato</strong></summary>
 
-- ✉️ Envio via API Resend
+- 📧 Informações de contato diretas
 - ✅ Validação em tempo real
 - 🔄 Estados de loading
-- 🎉 Feedback visual de sucesso
+- 🎉 Feedback visual interativo
 </details>
 
 ---
@@ -170,9 +169,7 @@ graph LR
 ```
 📁 portfolio-rafaelgogge/
 ├── 📂 app/                     # Next.js App Router
-│   ├── 📂 api/                 # API Routes
-│   │   └── 📂 send-email/      # Endpoint de contato
-│   ├── 📄 layout.tsx           # Layout principal
+│   ├──  layout.tsx           # Layout principal
 │   ├── 📄 page.tsx             # Página inicial
 │   └── 📄 globals.css          # Estilos globais
 ├── 📂 components/              # Componentes React
@@ -249,6 +246,23 @@ pnpm dev
 | 👀 | **Preview** | `pnpm preview` |
 
 ---
+
+## 🌍 Deploy
+
+### 🚀 **Deploy no Vercel (Recomendado)**
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rafaelgogge/portfolio-rafaelgogge)
+
+### ⚙️ **Configuração Simplificada**
+
+```env
+# 🌐 https://rafaelgogge.vercel.app
+NEXT_PUBLIC_SITE_URL=https://rafaelgogge.vercel.app
+
+# ✨ Este projeto não requer configurações especiais
+# 📱 Deploy direto no Vercel sem variáveis de ambiente
+```
+
 ### � **Performance Metrics**
 
 | Métrica | Score | Status |

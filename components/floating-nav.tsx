@@ -19,6 +19,7 @@ import {
 import { useI18n } from "@/hooks/use-i18n";
 import { LanguageSelector } from "./language-selector";
 import { AccessibilityPanel } from "./accessibility-panel";
+import { SettingsPanel } from "./settings-panel";
 
 export function FloatingNav() {
   const { t } = useI18n();
@@ -27,7 +28,6 @@ export function FloatingNav() {
   const [mounted, setMounted] = useState(false);
   const [isNavVisible, setIsNavVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [highContrast, setHighContrast] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -150,14 +150,7 @@ export function FloatingNav() {
               </div>
 
               <div className="flex items-center gap-4">
-                <motion.button
-                  onClick={() => setIsSettingsOpen(true)}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Settings className="w-5 h-5" />
-                </motion.button>
+                <SettingsPanel />
                 <AccessibilityPanel />
                 <LanguageSelector />
               </div>
@@ -213,6 +206,9 @@ export function FloatingNav() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Painel de Configurações */}
+      <SettingsPanel />
     </>
   );
 }

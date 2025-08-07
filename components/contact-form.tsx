@@ -150,11 +150,32 @@ export function ContactForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validate()) {
-      setFormStatus("error");
+    // Validação simples dos campos obrigatórios
+    const validationErrors: Record<string, string> = {};
+
+    if (!formData.name.trim()) {
+      validationErrors.name = t("contact.form.validation.nameRequired");
+    }
+    if (!formData.email.trim()) {
+      validationErrors.email = t("contact.form.validation.emailRequired");
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      validationErrors.email = t("contact.form.validation.emailInvalid");
+    }
+    if (!formData.subject.trim()) {
+      validationErrors.subject = t("contact.form.validation.subjectRequired");
+    }
+    if (!formData.message.trim()) {
+      validationErrors.message = t("contact.form.validation.messageRequired");
+    }
+
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
       toast({
         title: "Erro de validação",
         description: "Por favor, corrija os erros no formulário.",
@@ -167,35 +188,22 @@ export function ContactForm() {
     setFormStatus("idle");
 
     try {
-      // Envia o formulário para a API
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      // Simular envio bem-sucedido (apenas para demonstração)
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setFormStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+      toast({
+        title: "Formulário preenchido!",
+        description: "Entre em contato através das informações ao lado.",
+        variant: "default",
       });
-      if (response.ok) {
-        setFormStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        toast({
-          title: "Mensagem enviada!",
-          description: "Obrigado pelo contato. Retornarei em breve!",
-          variant: "default",
-        });
-      } else {
-        setFormStatus("error");
-        const data = await response.json();
-        toast({
-          title: "Erro ao enviar mensagem",
-          description: data.error || "Tente novamente mais tarde.",
-          variant: "destructive",
-        });
-      }
     } catch (error) {
-      console.error("Submission error:", error);
+      console.error("Form error:", error);
       setFormStatus("error");
       toast({
-        title: "Erro ao enviar mensagem",
-        description: "Tente novamente mais tarde.",
+        title: "Erro no formulário",
+        description: "Por favor, use as informações de contato ao lado.",
         variant: "destructive",
       });
     } finally {
@@ -306,13 +314,20 @@ export function ContactForm() {
           </h4>
 
           <div className="mb-6 p-4 bg-yellow-900/40 border border-yellow-700/40 rounded-lg text-yellow-300 text-center">
-            Este formulário está temporariamente desabilitado enquanto o site está em produção.<br />
+            Este formulário está temporariamente desabilitado enquanto o site
+            está em produção.
+            <br />
             Para entrar em contato, envie um e-mail diretamente para:
-            <span className="block mt-2 font-semibold text-yellow-200 select-all">dev.rafaelgogge@gmail.com</span>
+            <span className="block mt-2 font-semibold text-yellow-200 select-all">
+              dev.rafaelgogge@gmail.com
+            </span>
           </div>
 
           {/* Formulário desabilitado */}
-          <form className="space-y-6 opacity-50 pointer-events-none select-none" aria-disabled="true">
+          <form
+            className="space-y-6 opacity-50 pointer-events-none select-none"
+            aria-disabled="true"
+          >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Nome */}
               <div className="space-y-1 relative">

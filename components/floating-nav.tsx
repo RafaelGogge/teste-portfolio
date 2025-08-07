@@ -152,7 +152,10 @@ export function FloatingNav() {
 
               <div className="flex items-center gap-4">
                 <motion.button
-                  onClick={() => setIsSettingsOpen(true)}
+                  onClick={() => {
+                    setIsSettingsOpen(true);
+                    console.log("Settings button clicked!", isSettingsOpen);
+                  }}
                   className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}

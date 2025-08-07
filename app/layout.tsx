@@ -6,7 +6,6 @@ import { I18nProvider } from "@/hooks/use-i18n";
 import { AccessibilityProvider } from "@/hooks/use-accessibility";
 import { AppProvider } from "@/contexts/AppContext";
 import { Toaster } from "@/components/ui/toaster";
-import { AdvancedSettings } from "@/components/advanced-settings";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -75,7 +74,6 @@ export default function RootLayout({
             <AccessibilityProvider>
               {children}
               <Toaster />
-              <AdvancedSettings />
             </AccessibilityProvider>
           </I18nProvider>
         </AppProvider>

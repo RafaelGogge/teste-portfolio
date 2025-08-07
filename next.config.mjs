@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Otimizações para produção (swcMinify é padrão no Next.js 15)
   reactStrictMode: true,
 
   // Configurações de build - Otimizadas para Vercel
@@ -41,11 +42,6 @@ const nextConfig = {
         ],
       },
     ];
-  },
-
-  // Configurações experimentais para performance
-  experimental: {
-    optimizeCss: true,
   },
 }
 

@@ -249,27 +249,6 @@ pnpm dev
 | 👀 | **Preview** | `pnpm preview` |
 
 ---
-
-## 🌍 Deploy
-
-### 🚀 **Deploy no Vercel (Recomendado)**
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rafaelgogge/portfolio-rafaelgogge)
-
-### ⚙️ **Variáveis de Ambiente**
-
-```env
-# 📧 Serviço de email (Resend)
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxx
-
-# 🌐 URL do site
-NEXT_PUBLIC_SITE_URL=https://rafaelgogge.vercel.app
-
-# 📞 Configurações de contato (opcional)
-EMAIL_FROM=noreply@rafaelgogge.dev
-EMAIL_TO=contato@rafaelgogge.dev
-```
-
 ### � **Performance Metrics**
 
 | Métrica | Score | Status |
@@ -317,7 +296,7 @@ export const translations = {
 
 <div align="center">
 
-[![Email](https://img.shields.io/badge/Email-contato@rafaelgogge.dev-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:contato@rafaelgogge.dev)
+[![Email](https://img.shields.io/badge/Email-dev.rafaelgogge@gmail.com-red?style=for-the-badge&logo=gmail&logoColor=white)](mailto:dev.rafaelgogge@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-rafaelgogge-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/rafaelgogge)
 [![GitHub](https://img.shields.io/badge/GitHub-rafaelgogge-black?style=for-the-badge&logo=github&logoColor=white)](https://github.com/rafaelgogge)
 

@@ -114,11 +114,16 @@ const useResponsivePositions = () => {
 
   const getRadius = () => {
     switch (screenSize) {
-      case "small": return 110;
-      case "medium": return 135;
-      case "large": return 160;
-      case "xlarge": return 180;
-      default: return 160;
+      case "small":
+        return 110;
+      case "medium":
+        return 135;
+      case "large":
+        return 160;
+      case "xlarge":
+        return 180;
+      default:
+        return 160;
     }
   };
 
@@ -136,14 +141,17 @@ const useResponsivePositions = () => {
 
 export function TechRadarSkills() {
   const { t } = useI18n();
-  const { getRadius, screenSize, getCircularPosition } = useResponsivePositions();
-  
+  const { getRadius, screenSize, getCircularPosition } =
+    useResponsivePositions();
+
   const [selectedArea, setSelectedArea] = useState<string | null>(null);
   const [hoveredArea, setHoveredArea] = useState<string | null>(null);
   const [scannerAngle, setScannerAngle] = useState(285); // Inicia próximo ao frontend (300°)
   const [radarActive, setRadarActive] = useState(false);
   const [detectedAreas, setDetectedAreas] = useState<Set<string>>(new Set());
-  const [blipAnimations, setBlipAnimations] = useState<Map<string, boolean>>(new Map());
+  const [blipAnimations, setBlipAnimations] = useState<Map<string, boolean>>(
+    new Map()
+  );
 
   // Função para normalizar ângulos (0-360)
   const normalizeAngle = (angle: number) => {
@@ -151,19 +159,22 @@ export function TechRadarSkills() {
   };
 
   // Função para verificar se o scanner está detectando uma área
-  const isAreaDetected = useCallback((areaAngle: number, scannerAngle: number) => {
-    const normalizedScanner = normalizeAngle(scannerAngle);
-    const normalizedArea = normalizeAngle(areaAngle);
-    
-    // Janela de detecção de ±25 graus para melhor experiência
-    const detectionWindow = 25;
-    
-    // Calcular diferença mínima entre ângulos (considerando wrap-around)
-    const diff = Math.abs(normalizedScanner - normalizedArea);
-    const minDiff = Math.min(diff, 360 - diff);
-    
-    return minDiff <= detectionWindow;
-  }, []);
+  const isAreaDetected = useCallback(
+    (areaAngle: number, scannerAngle: number) => {
+      const normalizedScanner = normalizeAngle(scannerAngle);
+      const normalizedArea = normalizeAngle(areaAngle);
+
+      // Janela de detecção de ±25 graus para melhor experiência
+      const detectionWindow = 25;
+
+      // Calcular diferença mínima entre ângulos (considerando wrap-around)
+      const diff = Math.abs(normalizedScanner - normalizedArea);
+      const minDiff = Math.min(diff, 360 - diff);
+
+      return minDiff <= detectionWindow;
+    },
+    []
+  );
 
   // Animação do scanner e detecção de áreas com timing melhorado
   useEffect(() => {
@@ -172,15 +183,15 @@ export function TechRadarSkills() {
     const interval = setInterval(() => {
       setScannerAngle((prev: number) => {
         const newAngle = (prev + 2) % 360; // Velocidade aumentada para melhor visualização
-        
+
         // Verificar detecção de áreas
         const currentlyDetected = new Set<string>();
         const newBlipAnimations = new Map<string, boolean>();
-        
+
         Object.entries(skillsData).forEach(([key, area]) => {
           if (isAreaDetected(area.angle, newAngle)) {
             currentlyDetected.add(key);
-            
+
             // Triggerar animação de blip se área foi recém-detectada
             if (!detectedAreas.has(key)) {
               newBlipAnimations.set(key, true);
@@ -195,10 +206,13 @@ export function TechRadarSkills() {
             }
           }
         });
-        
+
         setDetectedAreas(currentlyDetected);
-        setBlipAnimations((prev: Map<string, boolean>) => new Map([...prev, ...newBlipAnimations]));
-        
+        setBlipAnimations(
+          (prev: Map<string, boolean>) =>
+            new Map([...prev, ...newBlipAnimations])
+        );
+
         return newAngle;
       });
     }, 40); // Timing otimizado para fluidez
@@ -231,10 +245,10 @@ export function TechRadarSkills() {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
+          style={{ textShadow: "none" }}
         >
           🎯 Radar de Competências
-        </motion.h2>
-        
+        </motion.h2>{" "}
         <motion.div
           className="flex items-center justify-center gap-4 text-sm font-mono"
           initial={{ opacity: 0, y: 20 }}
@@ -242,12 +256,14 @@ export function TechRadarSkills() {
           transition={{ duration: 0.8, delay: 0.3 }}
         >
           {/* Status do sistema */}
-          <div className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 backdrop-blur-sm ${
-            radarActive 
-              ? "bg-success/20 border-success/60 text-success shadow-lg shadow-success/20" 
-              : "bg-warning/20 border-warning/60 text-warning shadow-lg shadow-warning/20"
-          }`}>
-            <motion.div 
+          <div
+            className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 backdrop-blur-sm ${
+              radarActive
+                ? "bg-success/20 border-success/60 text-success shadow-lg shadow-success/20"
+                : "bg-warning/20 border-warning/60 text-warning shadow-lg shadow-warning/20"
+            }`}
+          >
+            <motion.div
               className={`w-3 h-3 rounded-full ${
                 radarActive ? "bg-success" : "bg-warning"
               }`}
@@ -264,13 +280,16 @@ export function TechRadarSkills() {
               {radarActive ? "Sistema Online" : "Sistema Offline"}
             </span>
           </div>
-          
+
           <div className="text-zinc-500">•</div>
-          
+
           <div className="text-zinc-300 bg-zinc-800/50 px-3 py-2 rounded-full border border-zinc-600/50">
             {radarActive ? (
               <span className="text-yellow-300">
-                ⚡ Detectadas: <span className="font-bold text-green-300">{detectedAreas.size}/6</span>
+                ⚡ Detectadas:{" "}
+                <span className="font-bold text-green-300">
+                  {detectedAreas.size}/6
+                </span>
               </span>
             ) : (
               <span>👆 Clique para ativar</span>
@@ -282,15 +301,14 @@ export function TechRadarSkills() {
       {/* Container do radar principal */}
       <div className="flex items-center justify-center w-full flex-1">
         <div className="relative w-full max-w-[350px] h-[350px] md:max-w-[450px] md:h-[450px] lg:max-w-[500px] lg:h-[500px] flex items-center justify-center">
-          
           {/* Círculos concêntricos do radar com animação aprimorada */}
           <div className="absolute inset-0 flex items-center justify-center">
             {[1, 2, 3, 4].map((ring) => (
               <motion.div
                 key={ring}
                 className={`absolute rounded-full border-2 ${
-                  radarActive 
-                    ? "border-green-400/40 shadow-lg shadow-green-400/20" 
+                  radarActive
+                    ? "border-green-400/40 shadow-lg shadow-green-400/20"
                     : "border-zinc-600/30"
                 }`}
                 style={{
@@ -318,27 +336,32 @@ export function TechRadarSkills() {
 
           {/* Linhas radiais melhoradas */}
           <div className="absolute inset-0 flex items-center justify-center">
-            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle) => (
-              <motion.div
-                key={angle}
-                className={`absolute origin-bottom ${
-                  radarActive
-                    ? "bg-gradient-to-t from-green-400/50 via-blue-400/30 to-transparent"
-                    : "bg-gradient-to-t from-zinc-500/20 via-zinc-400/10 to-transparent"
-                }`}
-                style={{
-                  width: "1px",
-                  height: "50%",
-                  maxHeight: "300px",
-                  transform: `translate(-50%, -100%) rotate(${angle}deg)`,
-                  left: "50%",
-                  top: "50%",
-                }}
-                initial={{ scaleY: 0 }}
-                animate={{ scaleY: 1 }}
-                transition={{ delay: 0.8 + (angle / 360) * 0.5, duration: 0.6 }}
-              />
-            ))}
+            {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map(
+              (angle) => (
+                <motion.div
+                  key={angle}
+                  className={`absolute origin-bottom ${
+                    radarActive
+                      ? "bg-gradient-to-t from-green-400/50 via-blue-400/30 to-transparent"
+                      : "bg-gradient-to-t from-zinc-500/20 via-zinc-400/10 to-transparent"
+                  }`}
+                  style={{
+                    width: "1px",
+                    height: "50%",
+                    maxHeight: "300px",
+                    transform: `translate(-50%, -100%) rotate(${angle}deg)`,
+                    left: "50%",
+                    top: "50%",
+                  }}
+                  initial={{ scaleY: 0 }}
+                  animate={{ scaleY: 1 }}
+                  transition={{
+                    delay: 0.8 + (angle / 360) * 0.5,
+                    duration: 0.6,
+                  }}
+                />
+              )
+            )}
           </div>
 
           {/* Scanner linha melhorado */}
@@ -351,8 +374,10 @@ export function TechRadarSkills() {
                   height: "50%",
                   maxHeight: "300px",
                   transform: `translate(-50%, -100%) rotate(${scannerAngle}deg)`,
-                  background: "linear-gradient(to top, #00ff00, #00ff0060, transparent)",
-                  filter: "drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 25px #00ff0080)",
+                  background:
+                    "linear-gradient(to top, #00ff00, #00ff0060, transparent)",
+                  filter:
+                    "drop-shadow(0 0 15px #00ff00) drop-shadow(0 0 25px #00ff0080)",
                   borderRadius: "2px",
                   left: "50%",
                   top: "50%",
@@ -419,16 +444,16 @@ export function TechRadarSkills() {
                 <>
                   <motion.div
                     className="absolute inset-0 rounded-full border-3 border-green-300/60"
-                    animate={{ 
-                      scale: [1, 2.2, 1], 
+                    animate={{
+                      scale: [1, 2.2, 1],
                       opacity: [0.8, 0, 0.8],
                     }}
                     transition={{ duration: 2.5, repeat: Infinity }}
                   />
                   <motion.div
                     className="absolute inset-0 rounded-full border-2 border-blue-300/40"
-                    animate={{ 
-                      scale: [1, 2.8, 1], 
+                    animate={{
+                      scale: [1, 2.8, 1],
                       opacity: [0.6, 0, 0.6],
                     }}
                     transition={{
@@ -449,7 +474,7 @@ export function TechRadarSkills() {
             const isSelected = selectedArea === key;
             const isHovered = hoveredArea === key;
             const hasBlipAnimation = blipAnimations.has(key);
-            
+
             // Centralização refinada: calcula o centro do container e ajusta o offset para todos os tamanhos
             const radius = getRadius();
             const circularPosition = getCircularPosition(area.angle, radius);
@@ -458,7 +483,7 @@ export function TechRadarSkills() {
             return (
               <motion.div
                 key={key}
-                className={`absolute ${isSelected ? 'z-50' : 'z-20'}`}
+                className={`absolute ${isSelected ? "z-50" : "z-20"}`}
                 animate={{
                   left: `calc(50% + ${circularPosition.x}px)`,
                   top: `calc(50% + ${circularPosition.y}px)`,
@@ -467,23 +492,24 @@ export function TechRadarSkills() {
                 }}
                 transition={{
                   type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                  duration: 0.8
+                  stiffness: 400,
+                  damping: 25,
+                  duration: 0.6,
+                  ease: "easeInOut",
                 }}
                 initial={{
                   left: `calc(50% + ${circularPosition.x}px)`,
                   top: `calc(50% + ${circularPosition.y}px)`,
-                  scale: 0,
-                  opacity: 0
+                  scale: 0.8,
+                  opacity: 0.6,
                 }}
                 style={{
-                  transform: 'translate(-50%, -50%)',
-                  width: isSelected ? 120 : (screenSize === "small" ? 70 : 80),
-                  height: isSelected ? 120 : (screenSize === "small" ? 70 : 80),
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  transform: "translate(-50%, -50%)",
+                  width: isSelected ? 120 : screenSize === "small" ? 70 : 80,
+                  height: isSelected ? 120 : screenSize === "small" ? 70 : 80,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <motion.button
@@ -492,7 +518,7 @@ export function TechRadarSkills() {
                   whileTap={{ scale: 0.9 }}
                   aria-label={`Área ${area.title}`}
                   tabIndex={0}
-                  style={{ width: '100%', height: '100%' }}
+                  style={{ width: "100%", height: "100%" }}
                 >
                   {/* Efeito blip aprimorado */}
                   {hasBlipAnimation && (
@@ -506,16 +532,16 @@ export function TechRadarSkills() {
                         scale: [0.5, 3, 0.5],
                         opacity: [0, 1, 0],
                       }}
-                      transition={{ 
+                      transition={{
                         duration: 1.8,
-                        ease: "easeOut"
+                        ease: "easeOut",
                       }}
                     />
                   )}
 
                   {/* Container da área melhorado */}
                   <motion.div
-                    className={`relative rounded-full border-2 transition-all duration-500 backdrop-blur-md ${
+                    className={`relative rounded-full border-2 transition-all duration-300 backdrop-blur-md ${
                       isDetected || isSelected || isHovered
                         ? "border-white bg-zinc-800/95 shadow-2xl"
                         : radarActive
@@ -523,56 +549,112 @@ export function TechRadarSkills() {
                         : "border-zinc-600/70 bg-zinc-900/80"
                     } flex flex-col items-center justify-center`}
                     style={{
-                      width: isSelected ? "120px" : (screenSize === "small" ? "70px" : "80px"),
-                      height: isSelected ? "120px" : (screenSize === "small" ? "70px" : "80px"),
-                      boxShadow: isDetected || isSelected || isHovered
-                        ? `0 0 35px ${area.color}70, inset 0 0 20px ${area.color}20`
-                        : `0 0 15px ${area.color}40`,
+                      width: isSelected
+                        ? "120px"
+                        : screenSize === "small"
+                        ? "70px"
+                        : "80px",
+                      height: isSelected
+                        ? "120px"
+                        : screenSize === "small"
+                        ? "70px"
+                        : "80px",
+                      boxShadow:
+                        isDetected || isSelected || isHovered
+                          ? `0 0 35px ${area.color}70, inset 0 0 20px ${area.color}20`
+                          : `0 0 15px ${area.color}40`,
                     }}
                     animate={{
-                      scale: isDetected && hasBlipAnimation ? [1, 1.3, 1] : 1,
-                      boxShadow: isDetected 
+                      scale: isDetected && hasBlipAnimation ? [1, 1.2, 1] : 1,
+                      boxShadow: isDetected
                         ? `0 0 35px ${area.color}70, inset 0 0 20px ${area.color}20`
                         : `0 0 15px ${area.color}40`,
+                      borderColor:
+                        isDetected || isSelected || isHovered
+                          ? "#ffffff"
+                          : isDetected
+                          ? area.color
+                          : "#71717a80",
                     }}
-                    transition={{ duration: 0.6 }}
+                    transition={{
+                      duration: 0.4,
+                      ease: "easeInOut",
+                      scale: { duration: 0.6 },
+                    }}
+                    whileHover={{
+                      scale: 1.1,
+                      transition: { duration: 0.2 },
+                    }}
+                    whileTap={{
+                      scale: 0.95,
+                      transition: { duration: 0.1 },
+                    }}
                   >
-                    <IconComponent
-                      className={`${isSelected ? 'w-10 h-10 mb-2' : 'w-6 h-6 mb-1'} transition-all duration-500 ${
-                        isDetected || isSelected ? "text-white" : "text-zinc-400"
+                    <motion.div
+                      className={`${
+                        isSelected ? "w-10 h-10 mb-2" : "w-6 h-6 mb-1"
+                      } transition-all duration-300 ${
+                        isDetected || isSelected
+                          ? "text-white"
+                          : "text-zinc-400"
                       }`}
                       style={{
-                        color: isDetected || isSelected ? area.color : undefined,
-                        filter: isDetected || isSelected 
-                          ? `drop-shadow(0 0 12px ${area.color}) drop-shadow(0 0 20px ${area.color}60)` 
-                          : "none",
+                        color:
+                          isDetected || isSelected ? area.color : undefined,
+                        filter:
+                          isDetected || isSelected
+                            ? `drop-shadow(0 0 12px ${area.color}) drop-shadow(0 0 20px ${area.color}60)`
+                            : "none",
                       }}
-                    />
-                    <span
-                      className={`${isSelected ? 'text-sm' : 'text-xs'} font-semibold text-center leading-tight transition-all duration-500 ${
-                        isDetected || isSelected ? "text-white" : "text-zinc-400"
-                      }`}
-                      style={{
-                        fontSize: isSelected ? "14px" : (screenSize === "small" ? "9px" : "10px"),
-                        textShadow: isDetected || isSelected 
-                          ? `0 0 10px ${area.color}90, 0 0 20px ${area.color}60` 
-                          : "none",
+                      animate={{
+                        scale: isDetected ? [1, 1.1, 1] : 1,
+                      }}
+                      transition={{
+                        duration: 0.4,
+                        scale: { duration: 0.6 },
                       }}
                     >
+                      <IconComponent className="w-full h-full" />
+                    </motion.div>
+                    <motion.span
+                      className={`${
+                        isSelected ? "text-sm" : "text-xs"
+                      } font-semibold text-center leading-tight transition-all duration-300 ${
+                        isDetected || isSelected
+                          ? "text-white"
+                          : "text-zinc-400"
+                      }`}
+                      style={{
+                        fontSize: isSelected
+                          ? "14px"
+                          : screenSize === "small"
+                          ? "9px"
+                          : "10px",
+                        textShadow:
+                          isDetected || isSelected
+                            ? `0 0 10px ${area.color}90, 0 0 20px ${area.color}60`
+                            : "none",
+                      }}
+                      animate={{
+                        opacity:
+                          isDetected || isSelected || !radarActive ? 1 : 0.7,
+                      }}
+                      transition={{ duration: 0.3 }}
+                    >
                       {area.title}
-                    </span>
+                    </motion.span>
 
                     {/* Indicador de detecção */}
                     {isDetected && (
                       <motion.div
                         className="absolute -top-2 -right-2 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-lg"
-                        animate={{ 
+                        animate={{
                           scale: [1, 1.4, 1],
                           boxShadow: [
                             "0 0 10px rgba(34, 197, 94, 0.6)",
                             "0 0 20px rgba(34, 197, 94, 0.8)",
-                            "0 0 10px rgba(34, 197, 94, 0.6)"
-                          ]
+                            "0 0 10px rgba(34, 197, 94, 0.6)",
+                          ],
                         }}
                         transition={{ duration: 1.5, repeat: Infinity }}
                       />
@@ -586,18 +668,26 @@ export function TechRadarSkills() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
                       aria-modal="true"
                       role="dialog"
                       tabIndex={-1}
                     >
                       <motion.div
                         className="relative bg-zinc-900/98 backdrop-blur-xl border border-zinc-600/60 rounded-2xl p-6 w-full max-w-md shadow-2xl focus:outline-none focus:ring-2 focus:ring-blue-400 pointer-events-auto"
-                        initial={{ scale: 0.85, y: 40 }}
-                        animate={{ scale: 1, y: 0 }}
-                        exit={{ scale: 0.85, y: 40 }}
-                        transition={{ duration: 0.4, ease: 'easeOut' }}
-                        style={{ boxShadow: `0 20px 60px ${area.color}30, 0 0 0 1px ${area.color}40, inset 0 0 20px rgba(0,0,0,0.5)` }}
+                        initial={{ scale: 0.9, y: 20, opacity: 0 }}
+                        animate={{ scale: 1, y: 0, opacity: 1 }}
+                        exit={{ scale: 0.9, y: 20, opacity: 0 }}
+                        transition={{
+                          duration: 0.3,
+                          ease: "easeOut",
+                          type: "spring",
+                          stiffness: 300,
+                          damping: 25,
+                        }}
+                        style={{
+                          boxShadow: `0 20px 60px ${area.color}30, 0 0 0 1px ${area.color}40, inset 0 0 20px rgba(0,0,0,0.5)`,
+                        }}
                         tabIndex={0}
                         aria-label={`Detalhes da área ${area.title}`}
                       >
@@ -610,13 +700,22 @@ export function TechRadarSkills() {
                           ×
                         </button>
                         <div className="flex items-center gap-3 mb-4">
-                          <div 
+                          <div
                             className="p-2 rounded-xl"
-                            style={{ backgroundColor: `${area.color}20`, boxShadow: `inset 0 0 20px ${area.color}30` }}
+                            style={{
+                              backgroundColor: `${area.color}20`,
+                              boxShadow: `inset 0 0 20px ${area.color}30`,
+                            }}
                           >
-                            <IconComponent className="w-6 h-6" style={{ color: area.color }} />
+                            <IconComponent
+                              className="w-6 h-6"
+                              style={{ color: area.color }}
+                            />
                           </div>
-                          <h3 className="text-xl font-bold tracking-wide" style={{ color: area.color }}>
+                          <h3
+                            className="text-xl font-bold tracking-wide"
+                            style={{ color: area.color }}
+                          >
                             {area.title}
                           </h3>
                         </div>
@@ -630,20 +729,33 @@ export function TechRadarSkills() {
                               transition={{ delay: index * 0.08 }}
                             >
                               <span className="text-zinc-200 font-medium text-base flex items-center gap-2">
-                                <span className="inline-block w-2 h-2 rounded-full" style={{ background: area.color }} />
+                                <span
+                                  className="inline-block w-2 h-2 rounded-full"
+                                  style={{ background: area.color }}
+                                />
                                 {skill.name}
                               </span>
                               <div className="flex items-center gap-2">
                                 <div className="w-full h-2 bg-zinc-700/80 rounded-full overflow-hidden border border-zinc-600/50">
                                   <motion.div
                                     className="h-full rounded-full"
-                                    style={{ backgroundColor: area.color, boxShadow: `inset 0 0 10px ${area.color}60` }}
+                                    style={{
+                                      backgroundColor: area.color,
+                                      boxShadow: `inset 0 0 10px ${area.color}60`,
+                                    }}
                                     initial={{ width: 0 }}
                                     animate={{ width: `${skill.level}%` }}
-                                    transition={{ delay: index * 0.08 + 0.2, duration: 0.8, ease: 'easeOut' }}
+                                    transition={{
+                                      delay: index * 0.08 + 0.2,
+                                      duration: 0.8,
+                                      ease: "easeOut",
+                                    }}
                                   />
                                 </div>
-                                <span className="text-xs font-bold w-10 text-right font-mono" style={{ color: area.color }}>
+                                <span
+                                  className="text-xs font-bold w-10 text-right font-mono"
+                                  style={{ color: area.color }}
+                                >
                                   {skill.level}%
                                 </span>
                               </div>
@@ -670,11 +782,18 @@ export function TechRadarSkills() {
         <p className="text-zinc-400 text-base leading-relaxed">
           {radarActive ? (
             <>
-              <span className="text-green-400 font-semibold">Radar Ativo!</span> As competências acendem quando detectadas pelo scanner. Explore clicando nas áreas iluminadas!
+              <span className="text-green-400 font-semibold">Radar Ativo!</span>{" "}
+              As competências acendem quando detectadas pelo scanner. Explore
+              clicando nas áreas iluminadas!
             </>
           ) : (
             <>
-              💡 <span className="text-blue-400 font-semibold">Pronto para explorar?</span> Ative o radar para ver minhas competências sendo detectadas em tempo real como um radar de verdade!
+              💡{" "}
+              <span className="text-blue-400 font-semibold">
+                Pronto para explorar?
+              </span>{" "}
+              Ative o radar para ver minhas competências sendo detectadas em
+              tempo real como um radar de verdade!
             </>
           )}
         </p>

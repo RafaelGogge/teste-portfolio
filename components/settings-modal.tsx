@@ -1,39 +1,26 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Settings,
   X,
-  Palette,
-  Volume2,
-  VolumeX,
-  Monitor,
-  Zap,
   Eye,
-  Type,
-  RotateCcw,
-  Download,
-  Upload,
   Contrast,
   MousePointer,
   Keyboard,
   Speaker,
-  User,
-  Globe,
+  Type,
+  RotateCcw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAccessibility } from "@/hooks/use-accessibility";
-import { useI18n } from "@/hooks/use-i18n";
 
-interface SettingsModalProps {
+interface AccessibilityModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
-  const [activeTab, setActiveTab] = useState("appearance");
-  const { t, setLanguage, language } = useI18n();
+export function SettingsModal({ isOpen, onClose }: AccessibilityModalProps) {
   const {
     fontSize,
     highContrast,
@@ -58,176 +45,6 @@ export function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     announceToScreenReader,
     playSound,
   } = useAccessibility();
-
-  const tabs = [
-    {
-      id: "appearance",
-      label: "Aparência",
-      icon: Palette,
-      description: "Tema, cores e estilo visual",
-    },
-    {
-      id: "accessibility",
-      label: "Acessibilidade",
-      icon: Eye,
-      description: "Opções de acessibilidade",
-    },
-    {
-      id: "audio",
-      label: "Áudio",
-      icon: Volume2,
-      description: "Sons e feedback sonoro",
-    },
-    {
-      id: "performance",
-      label: "Performance",
-      icon: Zap,
-      description: "Animações e otimizações",
-    },
-    {
-      id: "system",
-      label: "Sistema",
-      icon: Settings,
-      description: "Configurações gerais",
-    },
-  ];
-
-  const colorSchemes = [
-    { id: "default", name: "Padrão", colors: ["#0ea5e9", "#8b5cf6"] },
-    { id: "emerald", name: "Esmeralda", colors: ["#10b981", "#059669"] },
-    { id: "rose", name: "Rosa", colors: ["#f43f5e", "#e11d48"] },
-    { id: "amber", name: "Âmbar", colors: ["#f59e0b", "#d97706"] },
-    { id: "violet", name: "Violeta", colors: ["#8b5cf6", "#7c3aed"] },
-  ];
-
-  const handleTabChange = (tabId: string) => {
-    setActiveTab(tabId);
-    playSound && playSound("click");
-  };
-
-  const exportSettings = () => {
-    const settings = {
-      fontSize,
-      highContrast,
-      reducedMotion,
-      largeText,
-      focusIndicators,
-      soundEnabled,
-      soundVolume,
-      keyboardNavigation,
-      screenReaderMode,
-      language,
-    };
-
-    const dataStr = JSON.stringify(settings, null, 2);
-    const dataBlob = new Blob([dataStr], { type: "application/json" });
-    const url = URL.createObjectURL(dataBlob);
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "portfolio-settings.json";
-    link.click();
-
-    URL.revokeObjectURL(url);
-    playSound && playSound("success");
-    announceToScreenReader &&
-      announceToScreenReader("Configurações exportadas com sucesso");
-  };
-
-  const importSettings = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const settings = JSON.parse(e.target?.result as string);
-        // Apply imported settings
-        // Implementation would depend on your state management
-        playSound && playSound("success");
-        announceToScreenReader &&
-          announceToScreenReader("Configurações importadas com sucesso");
-      } catch (error) {
-        console.error("Error importing settings:", error);
-        playSound && playSound("error");
-        announceToScreenReader &&
-          announceToScreenReader("Erro ao importar configurações");
-      }
-    };
-    reader.readAsText(file);
-  };
-
-  const renderTabContent = () => {
-    switch (activeTab) {
-      case "appearance":
-        return (
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Esquema de Cores</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                {colorSchemes.map((scheme) => (
-                  <motion.button
-                    key={scheme.id}
-                    className="p-3 rounded-lg border border-border hover:border-primary/50 transition-colors"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => {
-                      // Apply color scheme logic here
-                      playSound && playSound("click");
-                    }}
-                  >
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="flex gap-1">
-                        {scheme.colors.map((color, index) => (
-                          <div
-                            key={index}
-                            className="w-4 h-4 rounded-full"
-                            style={{ backgroundColor: color }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-sm font-medium">{scheme.name}</p>
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Tamanho da Fonte</h3>
-              <div className="flex items-center gap-4">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    decreaseFontSize();
-                    playSound && playSound("click");
-                  }}
-                >
-                  <Type className="w-4 h-4" />
-                  Menor
-                </Button>
-                <span className="min-w-[100px] text-center font-medium">
-                  {fontSize}px
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    increaseFontSize();
-                    playSound && playSound("click");
-                  }}
-                >
-                  <Type className="w-4 h-4" />
-                  Maior
-                </Button>
-              </div>
-            </div>
-          </div>
-        );
-
-      case "accessibility":
-        return (
           <div className="space-y-6">
             <div className="grid gap-4">
               <div className="flex items-center justify-between p-4 rounded-lg border border-border">

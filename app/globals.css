@@ -4,51 +4,102 @@
 
 @layer base {
   :root {
-    /* === Cores Base === */
-    --background: #080612;
-    --foreground: #FAFAFA;
-    --card: #111019;
-    --card-foreground: #FAFAFA;
-    --popover: #161323;
-    --popover-foreground: #FAFAFA;
-    --primary: #6366F1;
-    --primary-foreground: #fff;
-    --primary-hover: #818CF8;
-    --primary-active: #4F46E5;
-    --secondary: #A855F7;
-    --secondary-foreground: #fff;
-    --secondary-hover: #C084FC;
-    --secondary-active: #7C3AED;
-    --accent: #22D3EE;
-    --accent-foreground: #161323;
-    --accent-hover: #38BDF8;
-    --accent-active: #0891B2;
-    --destructive: #EF4444;
-    --destructive-foreground: #fff;
-    --warning: #F59E0B;
-    --warning-foreground: #161323;
-    --success: #10B981;
-    --success-foreground: #fff;
-    --info: #3B82F6;
-    --info-foreground: #fff;
-    --muted: #1F1F23;
-    --muted-foreground: #A1A1AA;
-    --border: #2A2A2F;
-    --input: #2F2F35;
-    --ring: #6366F1;
-    --radius: 12px;
+    /* Animação de gradiente global - melhorada */
+    --gradient-animated: linear-gradient(270deg,
+        hsl(245, 95%, 65%),
+        hsl(291, 70%, 55%),
+        hsl(172, 70%, 60%),
+        hsl(36, 90%, 65%),
+        hsl(245, 95%, 65%));
+    --gradient-animated-size: 500% 500%;
 
-    /* === Gradientes === */
-    --gradient-main: linear-gradient(135deg, #6366F1 0%, #A855F7 50%, #22D3EE 100%);
-    --gradient-accent: linear-gradient(135deg, #22D3EE 0%, #F59E0B 100%);
-    --gradient-subtle: linear-gradient(135deg, #111019 0%, #161323 100%);
+    /* Sistema de cores melhorado para modo escuro */
+    --background: 222 84% 3%;
+    /* #080612 - Mais escuro */
+    --foreground: 210 40% 98%;
+    /* #FAFAFA */
+    --card: 222 60% 5%;
+    /* #111019 - Melhor contraste */
+    --card-foreground: 210 40% 98%;
+    --popover: 222 55% 7%;
+    /* #161323 */
+    --popover-foreground: 210 40% 98%;
 
-    /* === Sombras === */
+    /* Cores primárias aprimoradas */
+    --primary: 245 95% 68%;
+    /* #6366F1 - Indigo vibrante */
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 245 95% 75%;
+    /* Hover state */
+    --primary-active: 245 95% 60%;
+    /* Active state */
+
+    /* Cores secundárias melhoradas */
+    --secondary: 291 70% 58%;
+    /* #A855F7 - Roxo vibrante */
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 291 70% 65%;
+    --secondary-active: 291 70% 50%;
+
+    /* Cores de destaque */
+    --accent: 172 70% 55%;
+    /* #22D3EE - Cyan vibrante */
+    --accent-foreground: 222 47% 11%;
+    --accent-hover: 172 70% 62%;
+    --accent-active: 172 70% 48%;
+
+    /* Estados e feedback */
+    --destructive: 0 84% 60%;
+    /* #EF4444 */
+    --destructive-foreground: 0 0% 100%;
+    --warning: 43 96% 56%;
+    /* #F59E0B */
+    --warning-foreground: 222 47% 11%;
+    --success: 142 76% 36%;
+    /* #10B981 */
+    --success-foreground: 0 0% 100%;
+    --info: 217 91% 60%;
+    /* #3B82F6 */
+    --info-foreground: 0 0% 100%;
+
+    /* Superfícies e bordas */
+    --muted: 217 15% 12%;
+    /* #1F1F23 - Melhor legibilidade */
+    --muted-foreground: 215 25% 70%;
+    /* Texto mais legível */
+    --border: 217 25% 15%;
+    /* #2A2A2F - Bordas mais visíveis */
+    --input: 217 20% 18%;
+    /* #2F2F35 - Inputs mais claros */
+    --ring: 245 95% 68%;
+    /* Focus ring */
+
+    /* Bordas especiais */
+    --border-subtle: 217 20% 12%;
+    /* Bordas sutis */
+    --border-strong: 217 30% 25%;
+    /* Bordas fortes */
+
+    /* Gradientes melhorados */
+    --gradient-main: linear-gradient(135deg,
+        hsl(245, 95%, 68%) 0%,
+        hsl(291, 70%, 58%) 50%,
+        hsl(172, 70%, 55%) 100%);
+    --gradient-accent: linear-gradient(135deg,
+        hsl(172, 70%, 55%) 0%,
+        hsl(43, 96%, 56%) 100%);
+    --gradient-subtle: linear-gradient(135deg,
+        hsl(222, 60%, 5%) 0%,
+        hsl(222, 55%, 7%) 100%);
+
+    /* Sombras melhoradas */
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.2);
     --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
-    --shadow-glow: 0 0 20px #6366F1;
+    --shadow-glow: 0 0 20px rgb(99 102 241 / 0.3);
+    --radius: 0.75rem;
+    /* Bordas mais suaves */
   }
 
   @layer base {

@@ -19,7 +19,7 @@ import {
 import { useI18n } from "@/hooks/use-i18n";
 import { LanguageSelector } from "./language-selector";
 import { AccessibilityPanel } from "./accessibility-panel";
-import { SettingsModal } from "./settings-modal";
+import { AccessibilityModal } from "./accessibility-modal";
 
 export function FloatingNav() {
   const { t } = useI18n();
@@ -220,8 +220,8 @@ export function FloatingNav() {
         )}
       </AnimatePresence>
 
-      {/* Modal de Configurações */}
-      <SettingsModal
+      {/* Modal de Acessibilidade */}
+      <AccessibilityModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
       />

@@ -1,72 +1,93 @@
-"use client"
+"use client";
 
-import { createContext, useContext, useState, useEffect, useRef } from "react"
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  ReactNode,
+} from "react";
 
 interface AccessibilityContextType {
-  fontSize: number
-  highContrast: boolean
-  reducedMotion: boolean
-  largeText: boolean
-  focusIndicators: boolean
-  soundEnabled: boolean
-  soundVolume: number
-  keyboardNavigation: boolean
-  screenReaderMode: boolean
-  announcements: string[]
-  increaseFontSize: () => void
-  decreaseFontSize: () => void
-  toggleHighContrast: () => void
-  toggleReducedMotion: () => void
-  toggleLargeText: () => void
-  toggleFocusIndicators: () => void
-  toggleSound: () => void
-  setSoundVolume: (volume: number) => void
-  toggleKeyboardNavigation: () => void
-  toggleScreenReaderMode: () => void
-  announceToScreenReader: (message: string) => void
-  playSound: (type: 'click' | 'success' | 'error') => void
-  resetAccessibility: () => void
+  fontSize: number;
+  highContrast: boolean;
+  reducedMotion: boolean;
+  largeText: boolean;
+  focusIndicators: boolean;
+  soundEnabled: boolean;
+  soundVolume: number;
+  keyboardNavigation: boolean;
+  screenReaderMode: boolean;
+  announcements: string[];
+  increaseFontSize: () => void;
+  decreaseFontSize: () => void;
+  toggleHighContrast: () => void;
+  toggleReducedMotion: () => void;
+  toggleLargeText: () => void;
+  toggleFocusIndicators: () => void;
+  toggleSound: () => void;
+  setSoundVolume: (volume: number) => void;
+  toggleKeyboardNavigation: () => void;
+  toggleScreenReaderMode: () => void;
+  announceToScreenReader: (message: string) => void;
+  playSound: (type: "click" | "success" | "error") => void;
+  resetAccessibility: () => void;
 }
 
-const AccessibilityContext = createContext<AccessibilityContextType | undefined>(undefined)
+const AccessibilityContext = createContext<
+  AccessibilityContextType | undefined
+>(undefined);
 
 interface AccessibilityProviderProps {
-  children: React.ReactNode
+  children: ReactNode;
 }
 
-export function AccessibilityProvider({ children }: AccessibilityProviderProps) {
-  const [fontSize, setFontSize] = useState(16)
-  const [highContrast, setHighContrast] = useState(false)
-  const [reducedMotion, setReducedMotion] = useState(false)
-  const [largeText, setLargeText] = useState(false)
-  const [focusIndicators, setFocusIndicators] = useState(true)
-  const [soundEnabled, setSoundEnabled] = useState(true)
-  const [soundVolume, setSoundVolumeState] = useState(0.5)
-  const [keyboardNavigation, setKeyboardNavigation] = useState(true)
-  const [screenReaderMode, setScreenReaderMode] = useState(false)
-  const [announcements, setAnnouncements] = useState<string[]>([])
-  
-  const audioContextRef = useRef<AudioContext | null>(null)
+export function AccessibilityProvider({
+  children,
+}: AccessibilityProviderProps) {
+  const [fontSize, setFontSize] = useState(16);
+  const [highContrast, setHighContrast] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [largeText, setLargeText] = useState(false);
+  const [focusIndicators, setFocusIndicators] = useState(true);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundVolume, setSoundVolumeState] = useState(0.5);
+  const [keyboardNavigation, setKeyboardNavigation] = useState(true);
+  const [screenReaderMode, setScreenReaderMode] = useState(false);
+  const [announcements, setAnnouncements] = useState<string[]>([]);
+
+  const audioContextRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
-    const savedSettings = localStorage.getItem('accessibility-settings')
+    const savedSettings = localStorage.getItem("accessibility-settings");
     if (savedSettings) {
       try {
-        const settings = JSON.parse(savedSettings)
-        setFontSize(settings.fontSize || 16)
-        setHighContrast(settings.highContrast || false)
-        setReducedMotion(settings.reducedMotion || false)
-        setLargeText(settings.largeText || false)
-        setFocusIndicators(settings.focusIndicators !== undefined ? settings.focusIndicators : true)
-        setSoundEnabled(settings.soundEnabled !== undefined ? settings.soundEnabled : true)
-        setSoundVolumeState(settings.soundVolume || 0.5)
-        setKeyboardNavigation(settings.keyboardNavigation !== undefined ? settings.keyboardNavigation : true)
-        setScreenReaderMode(settings.screenReaderMode || false)
+        const settings = JSON.parse(savedSettings);
+        setFontSize(settings.fontSize || 16);
+        setHighContrast(settings.highContrast || false);
+        setReducedMotion(settings.reducedMotion || false);
+        setLargeText(settings.largeText || false);
+        setFocusIndicators(
+          settings.focusIndicators !== undefined
+            ? settings.focusIndicators
+            : true
+        );
+        setSoundEnabled(
+          settings.soundEnabled !== undefined ? settings.soundEnabled : true
+        );
+        setSoundVolumeState(settings.soundVolume || 0.5);
+        setKeyboardNavigation(
+          settings.keyboardNavigation !== undefined
+            ? settings.keyboardNavigation
+            : true
+        );
+        setScreenReaderMode(settings.screenReaderMode || false);
       } catch (error) {
-        console.error('Error loading accessibility settings:', error)
+        console.error("Error loading accessibility settings:", error);
       }
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     const settings = {
@@ -79,164 +100,186 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
       soundVolume,
       keyboardNavigation,
       screenReaderMode,
-    }
-    localStorage.setItem('accessibility-settings', JSON.stringify(settings))
-  }, [fontSize, highContrast, reducedMotion, largeText, focusIndicators, soundEnabled, soundVolume, keyboardNavigation, screenReaderMode])
+    };
+    localStorage.setItem("accessibility-settings", JSON.stringify(settings));
+  }, [
+    fontSize,
+    highContrast,
+    reducedMotion,
+    largeText,
+    focusIndicators,
+    soundEnabled,
+    soundVolume,
+    keyboardNavigation,
+    screenReaderMode,
+  ]);
 
   useEffect(() => {
-    const root = document.documentElement
-    root.style.fontSize = `${fontSize}px`
-    
+    const root = document.documentElement;
+    root.style.fontSize = `${fontSize}px`;
+
     if (highContrast) {
-      root.setAttribute('data-high-contrast', 'true')
+      root.setAttribute("data-high-contrast", "true");
     } else {
-      root.removeAttribute('data-high-contrast')
+      root.removeAttribute("data-high-contrast");
     }
-    
+
     if (reducedMotion) {
-      root.setAttribute('data-reduced-motion', 'true')
+      root.setAttribute("data-reduced-motion", "true");
     } else {
-      root.removeAttribute('data-reduced-motion')
+      root.removeAttribute("data-reduced-motion");
     }
-    
+
     if (largeText) {
-      root.setAttribute('data-large-text', 'true')
+      root.setAttribute("data-large-text", "true");
     } else {
-      root.removeAttribute('data-large-text')
+      root.removeAttribute("data-large-text");
     }
-    
+
     if (focusIndicators) {
-      root.setAttribute('data-focus-indicators', 'true')
+      root.setAttribute("data-focus-indicators", "true");
     } else {
-      root.removeAttribute('data-focus-indicators')
+      root.removeAttribute("data-focus-indicators");
     }
-    
+
     if (keyboardNavigation) {
-      root.setAttribute('data-keyboard-navigation', 'true')
+      root.setAttribute("data-keyboard-navigation", "true");
     } else {
-      root.removeAttribute('data-keyboard-navigation')
+      root.removeAttribute("data-keyboard-navigation");
     }
-    
+
     if (screenReaderMode) {
-      root.setAttribute('data-screen-reader', 'true')
+      root.setAttribute("data-screen-reader", "true");
     } else {
-      root.removeAttribute('data-screen-reader')
+      root.removeAttribute("data-screen-reader");
     }
-  }, [fontSize, highContrast, reducedMotion, largeText, focusIndicators, keyboardNavigation, screenReaderMode])
+  }, [
+    fontSize,
+    highContrast,
+    reducedMotion,
+    largeText,
+    focusIndicators,
+    keyboardNavigation,
+    screenReaderMode,
+  ]);
 
   const initAudioContext = () => {
     if (!audioContextRef.current && soundEnabled) {
       try {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)()
+        audioContextRef.current = new (window.AudioContext ||
+          (window as any).webkitAudioContext)();
       } catch (error) {
-        console.warn('Web Audio API not supported:', error)
+        console.warn("Web Audio API not supported:", error);
       }
     }
-  }
+  };
 
   const increaseFontSize = () => {
-    setFontSize(prev => Math.min(prev + 2, 24))
-  }
+    setFontSize((prev: number) => Math.min(prev + 2, 24));
+  };
 
   const decreaseFontSize = () => {
-    setFontSize(prev => Math.max(prev - 2, 12))
-  }
+    setFontSize((prev: number) => Math.max(prev - 2, 12));
+  };
 
   const toggleHighContrast = () => {
-    setHighContrast(prev => !prev)
-  }
+    setHighContrast((prev: boolean) => !prev);
+  };
 
   const toggleReducedMotion = () => {
-    setReducedMotion(prev => !prev)
-  }
+    setReducedMotion((prev: boolean) => !prev);
+  };
 
   const toggleLargeText = () => {
-    setLargeText(prev => !prev)
-  }
+    setLargeText((prev: boolean) => !prev);
+  };
 
   const toggleFocusIndicators = () => {
-    setFocusIndicators(prev => !prev)
-  }
+    setFocusIndicators((prev: boolean) => !prev);
+  };
 
   const toggleSound = () => {
-    setSoundEnabled(prev => !prev)
-  }
+    setSoundEnabled((prev: boolean) => !prev);
+  };
 
   const setSoundVolume = (volume: number) => {
-    setSoundVolumeState(Math.max(0, Math.min(1, volume)))
-  }
+    setSoundVolumeState(Math.max(0, Math.min(1, volume)));
+  };
 
   const toggleKeyboardNavigation = () => {
-    setKeyboardNavigation(prev => !prev)
-  }
+    setKeyboardNavigation((prev: boolean) => !prev);
+  };
 
   const toggleScreenReaderMode = () => {
-    setScreenReaderMode(prev => !prev)
-  }
+    setScreenReaderMode((prev: boolean) => !prev);
+  };
 
   const announceToScreenReader = (message: string) => {
-    setAnnouncements(prev => [...prev, message])
-    
-    setTimeout(() => {
-      setAnnouncements(prev => prev.slice(1))
-    }, 3000)
-  }
+    setAnnouncements((prev: string[]) => [...prev, message]);
 
-  const playSound = (type: 'click' | 'success' | 'error') => {
+    setTimeout(() => {
+      setAnnouncements((prev: string[]) => prev.slice(1));
+    }, 3000);
+  };
+
+  const playSound = (type: "click" | "success" | "error") => {
     if (!soundEnabled || !audioContextRef.current) {
-      initAudioContext()
-      return
+      initAudioContext();
+      return;
     }
 
     try {
-      const ctx = audioContextRef.current
-      const oscillator = ctx.createOscillator()
-      const gainNode = ctx.createGain()
+      const ctx = audioContextRef.current;
+      const oscillator = ctx.createOscillator();
+      const gainNode = ctx.createGain();
 
-      oscillator.connect(gainNode)
-      gainNode.connect(ctx.destination)
+      oscillator.connect(gainNode);
+      gainNode.connect(ctx.destination);
 
-      let frequency = 800
-      let duration = 0.1
+      let frequency = 800;
+      let duration = 0.1;
 
       switch (type) {
-        case 'click':
-          frequency = 800
-          duration = 0.1
-          break
-        case 'success':
-          frequency = 1000
-          duration = 0.2
-          break
-        case 'error':
-          frequency = 400
-          duration = 0.3
-          break
+        case "click":
+          frequency = 800;
+          duration = 0.1;
+          break;
+        case "success":
+          frequency = 1000;
+          duration = 0.2;
+          break;
+        case "error":
+          frequency = 400;
+          duration = 0.3;
+          break;
       }
 
-      oscillator.frequency.setValueAtTime(frequency, ctx.currentTime)
-      gainNode.gain.setValueAtTime(soundVolume * 0.1, ctx.currentTime)
-      gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration)
+      oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
+      gainNode.gain.setValueAtTime(soundVolume * 0.1, ctx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(
+        0.01,
+        ctx.currentTime + duration
+      );
 
-      oscillator.start(ctx.currentTime)
-      oscillator.stop(ctx.currentTime + duration)
+      oscillator.start(ctx.currentTime);
+      oscillator.stop(ctx.currentTime + duration);
     } catch (error) {
-      console.warn('Error playing sound:', error)
+      console.warn("Error playing sound:", error);
     }
-  }
+  };
 
   const resetAccessibility = () => {
-    setFontSize(16)
-    setHighContrast(false)
-    setReducedMotion(false)
-    setLargeText(false)
-    setFocusIndicators(true)
-    setSoundEnabled(true)
-    setSoundVolumeState(0.5)
-    setKeyboardNavigation(true)
-    setScreenReaderMode(false)
-    setAnnouncements([])
-  }
+    setFontSize(16);
+    setHighContrast(false);
+    setReducedMotion(false);
+    setLargeText(false);
+    setFocusIndicators(true);
+    setSoundEnabled(true);
+    setSoundVolumeState(0.5);
+    setKeyboardNavigation(true);
+    setScreenReaderMode(false);
+    setAnnouncements([]);
+  };
 
   const value: AccessibilityContextType = {
     fontSize,
@@ -262,7 +305,7 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
     announceToScreenReader,
     playSound,
     resetAccessibility,
-  }
+  };
 
   return (
     <AccessibilityContext.Provider value={value}>
@@ -278,13 +321,15 @@ export function AccessibilityProvider({ children }: AccessibilityProviderProps) 
         </div>
       )}
     </AccessibilityContext.Provider>
-  )
+  );
 }
 
 export function useAccessibility() {
-  const context = useContext(AccessibilityContext)
+  const context = useContext(AccessibilityContext);
   if (context === undefined) {
-    throw new Error("useAccessibility must be used within an AccessibilityProvider")
+    throw new Error(
+      "useAccessibility must be used within an AccessibilityProvider"
+    );
   }
-  return context
+  return context;
 }

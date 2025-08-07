@@ -1,0 +1,225 @@
+/* Hologram Courses Component Styles */
+
+.hologram-container {
+  @apply space-y-8;
+}
+
+.hologram-header {
+  @apply relative bg-gradient-to-br from-zinc-900/90 to-zinc-800/90 backdrop-blur-sm border border-cyan-500/30 rounded-2xl p-8;
+}
+
+.hologram-background {
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/5 to-transparent animate-pulse rounded-2xl;
+}
+
+.hologram-header-content {
+  @apply relative z-10 flex items-center justify-between;
+}
+
+.hologram-title-section {
+  @apply flex-1;
+}
+
+.hologram-title {
+  @apply text-3xl font-bold mb-2;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.hologram-subtitle {
+  @apply text-zinc-400;
+}
+
+.hologram-progress-section {
+  @apply flex items-center gap-6;
+}
+
+.progress-ring {
+  @apply relative w-32 h-32;
+}
+
+.progress-circle {
+  @apply w-full h-full transform -rotate-90;
+}
+
+.progress-stats {
+  @apply text-center;
+}
+
+.progress-percentage {
+  @apply text-2xl font-bold text-cyan-400;
+}
+
+.progress-label {
+  @apply text-sm text-zinc-400;
+}
+
+/* Filters */
+.filters-container {
+  @apply flex flex-wrap gap-3 mb-8;
+}
+
+.filter-button {
+  @apply px-4 py-2 rounded-full border transition-all duration-300 flex items-center gap-2 text-sm font-medium;
+}
+
+.filter-button.active {
+  @apply bg-cyan-500 text-black border-cyan-500 shadow-lg shadow-cyan-500/25;
+}
+
+.filter-button.inactive {
+  @apply bg-zinc-800/50 text-zinc-300 border-zinc-600 hover:border-cyan-500/50 hover:text-cyan-400;
+}
+
+.filter-icon {
+  @apply w-4 h-4;
+}
+
+/* Course Grid */
+.courses-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+}
+
+.course-card {
+  @apply relative group bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 backdrop-blur-sm border border-zinc-700/50 rounded-xl p-6;
+  @apply hover:border-cyan-500/50 transition-all duration-500 hover:shadow-lg hover:shadow-cyan-500/20 hover:scale-105;
+}
+
+.course-card::before {
+  content: "";
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl;
+}
+
+.course-header {
+  @apply flex items-start justify-between mb-4 relative z-10;
+}
+
+.course-icon {
+  @apply w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-r from-cyan-500 to-blue-500 text-white;
+  @apply group-hover:scale-110 transition-transform duration-300;
+}
+
+.course-status {
+  @apply px-3 py-1 rounded-full text-xs font-medium;
+}
+
+.course-status.completed {
+  @apply bg-green-500/20 text-green-400 border border-green-500/30;
+}
+
+.course-status.in-progress {
+  @apply bg-yellow-500/20 text-yellow-400 border border-yellow-500/30;
+}
+
+.course-status.planned {
+  @apply bg-gray-500/20 text-gray-400 border border-gray-500/30;
+}
+
+.course-content {
+  @apply relative z-10;
+}
+
+.course-title {
+  @apply text-lg font-semibold text-white mb-2;
+}
+
+.course-institution {
+  @apply text-sm text-cyan-400 mb-2;
+}
+
+.course-description {
+  @apply text-sm text-zinc-400 mb-4;
+}
+
+.course-details {
+  @apply flex items-center justify-between text-xs text-zinc-500 mb-4;
+}
+
+.course-duration {
+  @apply flex items-center gap-1;
+}
+
+.course-progress-container {
+  @apply space-y-2;
+}
+
+.course-progress-header {
+  @apply flex items-center justify-between text-sm;
+}
+
+.course-progress-label {
+  @apply text-zinc-400;
+}
+
+.course-progress-percentage {
+  @apply text-cyan-400 font-medium;
+}
+
+.course-progress {
+  @apply h-2 bg-zinc-700 rounded-full overflow-hidden;
+}
+
+.course-progress-fill {
+  @apply h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full transition-all duration-1000 ease-out;
+}
+
+/* Statistics */
+.stats-grid {
+  @apply grid grid-cols-3 gap-6 mt-8;
+}
+
+.stat-card {
+  @apply text-center p-4 bg-zinc-800/30 rounded-lg border border-zinc-700/30;
+}
+
+.stat-number {
+  @apply text-2xl font-bold;
+  background: linear-gradient(135deg, #06b6d4, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stat-label {
+  @apply text-sm text-zinc-400 mt-1;
+}
+
+/* Animations */
+.hologram-glow {
+  @apply animate-pulse;
+}
+
+.hologram-scan {
+  animation: hologram-scan 3s ease-in-out infinite;
+}
+
+@keyframes hologram-scan {
+  0%,
+  100% {
+    transform: translateY(0) scaleY(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-10px) scaleY(1.1);
+    opacity: 0.8;
+  }
+}
+
+.hologram-flicker {
+  animation: hologram-flicker 4s ease-in-out infinite;
+}
+
+@keyframes hologram-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  75% {
+    opacity: 0.9;
+  }
+}

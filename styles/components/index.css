@@ -1,0 +1,126 @@
+/* Components Styles Index */
+
+/* Import all component styles */
+@import "theme-toggle.css";
+@import "tech-radar-skills.css";
+@import "hologram-courses.css";
+@import "creative-hero.css";
+
+/* Global component utilities */
+.component-container {
+  @apply w-full max-w-7xl mx-auto px-4;
+}
+
+.component-section {
+  @apply py-20;
+}
+
+.component-heading {
+  @apply text-3xl md:text-4xl font-bold text-center mb-4;
+}
+
+.component-subheading {
+  @apply text-lg text-zinc-400 text-center max-w-2xl mx-auto mb-12;
+}
+
+.component-card {
+  @apply bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 rounded-xl p-6;
+  @apply hover:border-zinc-600/50 transition-all duration-300;
+}
+
+.component-button {
+  @apply px-6 py-3 rounded-lg font-semibold transition-all duration-300;
+  @apply hover:scale-105 active:scale-95;
+}
+
+.component-button-primary {
+  @apply bg-blue-600 text-white hover:bg-blue-700 border-2 border-blue-600 hover:border-blue-700;
+  @apply hover:shadow-lg hover:shadow-blue-500/25;
+}
+
+.component-button-secondary {
+  @apply bg-transparent text-zinc-300 border-2 border-zinc-600 hover:border-zinc-500;
+  @apply hover:bg-zinc-800 hover:text-white;
+}
+
+.component-icon {
+  @apply w-5 h-5 transition-transform duration-300;
+}
+
+.component-loading {
+  @apply animate-pulse bg-zinc-700/50 rounded;
+}
+
+/* Animation utilities - using consistent naming */
+.component-fade-in {
+  animation: componentFadeIn 0.6s ease-out;
+}
+
+.component-fade-in-up {
+  animation: componentFadeInUp 0.6s ease-out;
+}
+
+.component-slide-in-left {
+  animation: componentSlideInLeft 0.6s ease-out;
+}
+
+.component-slide-in-right {
+  animation: componentSlideInRight 0.6s ease-out;
+}
+
+@keyframes componentFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes componentFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes componentSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes componentSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+  .component-section {
+    @apply py-12;
+  }
+
+  .component-heading {
+    @apply text-2xl md:text-3xl;
+  }
+
+  .component-subheading {
+    @apply text-base;
+  }
+}

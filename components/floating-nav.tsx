@@ -19,7 +19,6 @@ import {
 import { useI18n } from "@/hooks/use-i18n";
 import { LanguageSelector } from "./language-selector";
 import { AccessibilityPanel } from "./accessibility-panel";
-import { AccessibilityModal } from "./accessibility-modal";
 
 export function FloatingNav() {
   const { t } = useI18n();
@@ -151,19 +150,6 @@ export function FloatingNav() {
               </div>
 
               <div className="flex items-center gap-4">
-                <motion.button
-                  onClick={() => {
-                    setIsSettingsOpen(true);
-                    console.log("Settings button clicked!", isSettingsOpen);
-                  }}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  aria-label="Abrir configurações"
-                  title="Configurações do Sistema"
-                >
-                  <Settings className="w-4 h-4" />
-                </motion.button>
                 <AccessibilityPanel />
                 <LanguageSelector />
               </div>
@@ -219,12 +205,6 @@ export function FloatingNav() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Modal de Acessibilidade */}
-      <AccessibilityModal
-        isOpen={isSettingsOpen}
-        onClose={() => setIsSettingsOpen(false)}
-      />
     </>
   );
 }

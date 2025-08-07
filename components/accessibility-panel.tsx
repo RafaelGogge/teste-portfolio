@@ -17,8 +17,10 @@ import {
   Contrast,
   MousePointer,
   Keyboard,
+  Speaker,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
 import { useAccessibility } from "@/hooks/use-accessibility";
 
 export function AccessibilityPanel() {
@@ -30,6 +32,7 @@ export function AccessibilityPanel() {
     largeText,
     focusIndicators,
     soundEnabled,
+    soundVolume,
     keyboardNavigation,
     screenReaderMode,
     increaseFontSize,
@@ -39,6 +42,7 @@ export function AccessibilityPanel() {
     toggleLargeText,
     toggleFocusIndicators,
     toggleSound,
+    setSoundVolume,
     toggleKeyboardNavigation,
     toggleScreenReaderMode,
     resetAccessibility,
@@ -68,6 +72,7 @@ export function AccessibilityPanel() {
             variant="outline"
             onClick={() => handleToggle(decreaseFontSize)}
             aria-label="Diminuir fonte"
+            disabled={fontSize <= 12}
           >
             <Minus className="w-4 h-4" />
           </Button>
@@ -79,6 +84,7 @@ export function AccessibilityPanel() {
             variant="outline"
             onClick={() => handleToggle(increaseFontSize)}
             aria-label="Aumentar fonte"
+            disabled={fontSize >= 24}
           >
             <Plus className="w-4 h-4" />
           </Button>
@@ -129,7 +135,7 @@ export function AccessibilityPanel() {
       id: "screen-reader",
       label: "Modo Leitor de Tela",
       description: "Otimizações para leitores de tela",
-      icon: Volume2,
+      icon: Speaker,
       active: screenReaderMode,
       action: () => handleToggle(toggleScreenReaderMode, "success"),
     },
@@ -141,32 +147,51 @@ export function AccessibilityPanel() {
       active: soundEnabled,
       action: () => handleToggle(toggleSound, "success"),
     },
+    {
+      id: "sound-volume",
+      label: "Volume do Som",
+      description: `Volume: ${Math.round(soundVolume * 100)}%`,
+      icon: Volume2,
+      type: "control" as const,
+      controls: (
+        <div className="flex items-center gap-2 w-32">
+          <VolumeX className="w-4 h-4 text-muted-foreground" />
+          <Slider
+            value={[soundVolume]}
+            onValueChange={(value) => {
+              setSoundVolume(value[0]);
+              playSound && playSound("click");
+            }}
+            max={1}
+            min={0}
+            step={0.1}
+            className="flex-1"
+            disabled={!soundEnabled}
+          />
+          <Volume2 className="w-4 h-4 text-muted-foreground" />
+        </div>
+      ),
+    },
   ];
 
   return (
     <>
-      {/* Botão Flutuante de Acessibilidade */}
-      <motion.div
-        className="fixed left-6 bottom-6 z-50"
-        initial={{ scale: 0, rotate: -180 }}
-        animate={{ scale: 1, rotate: 0 }}
-        transition={{ type: "spring", stiffness: 300, damping: 20, delay: 0.2 }}
+      {/* Botão de Acessibilidade na Navbar */}
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => {
+          setIsOpen(true);
+          playSound && playSound("click");
+          announceToScreenReader &&
+            announceToScreenReader("Painel de acessibilidade aberto");
+        }}
+        className="rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+        aria-label="Abrir painel de acessibilidade"
+        title="Configurações de Acessibilidade"
       >
-        <Button
-          onClick={() => {
-            setIsOpen(true);
-            playSound && playSound("click");
-            announceToScreenReader &&
-              announceToScreenReader("Painel de acessibilidade aberto");
-          }}
-          size="lg"
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 shadow-lg hover:shadow-xl transition-all duration-300 group"
-          aria-label="Abrir painel de acessibilidade"
-          title="Configurações de Acessibilidade"
-        >
-          <Accessibility className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-        </Button>
-      </motion.div>
+        <Accessibility className="h-4 w-4" />
+      </Button>
 
       {/* Modal do Painel */}
       <AnimatePresence>
@@ -220,16 +245,17 @@ export function AccessibilityPanel() {
 
               {/* Conteúdo */}
               <div className="max-h-[60vh] overflow-y-auto p-6 space-y-4">
-                {accessibilityFeatures.map((feature) => (
+                {accessibilityFeatures.map((feature, index) => (
                   <motion.div
                     key={feature.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.05 }}
                     className="flex items-center justify-between p-4 rounded-lg border border-border bg-card/50 hover:bg-card transition-colors"
                   >
                     <div className="flex items-start gap-3 flex-1">
                       <div
-                        className={`p-2 rounded-lg ${
+                        className={`p-2 rounded-lg transition-colors ${
                           feature.active
                             ? "bg-primary/20 text-primary"
                             : "bg-muted text-muted-foreground"
